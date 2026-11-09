@@ -99,7 +99,7 @@ void GlueProcessor::render(juce::AudioBuffer<float>& b,bool forceBypass)
     }
     publishPeak(inputPeak,ip);publishPeak(outputPeak,op);publishPeak(reductionPeak,bypassed?0.f:gr);
 }
-void GlueProcessor::processBlock(juce::AudioBuffer<float>& b,juce::MidiBuffer&){render(b,false);}
+void GlueProcessor::processBlock(juce::AudioBuffer<float>& b,juce::MidiBuffer&){ if (! licence->isUnlocked()) { b.clear(); return; } render(b,false);}
 void GlueProcessor::processBlockBypassed(juce::AudioBuffer<float>& b,juce::MidiBuffer&){render(b,true);}
 void GlueProcessor::pushScope(const ScopeFrame& frame)
 {
@@ -141,5 +141,5 @@ void GlueProcessor::setStateInformation(const void* data,int size)
         for(int i=0;i<2;++i){auto prefix=juce::String(i==0?"slotA":"slotB");auto& s=slots[(size_t)i];s.glue=juce::jlimit(0.f,100.f,(float)tree.getProperty(prefix+"Glue",40.f));s.mix=juce::jlimit(0.f,100.f,(float)tree.getProperty(prefix+"Mix",85.f));s.output=juce::jlimit(-12.f,12.f,(float)tree.getProperty(prefix+"Output",0.f));s.profile=juce::jlimit(0,5,(int)tree.getProperty(prefix+"Profile",5));}
     }
 }
-juce::AudioProcessorEditor* GlueProcessor::createEditor(){return new GlueEditor(*this);}
+juce::AudioProcessorEditor* GlueProcessor::createEditor(){return swell::LicenceGuard::attach (new GlueEditor(*this));}
 juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter(){return new GlueProcessor();}

@@ -1,5 +1,6 @@
 #pragma once
 #include <juce_audio_utils/juce_audio_utils.h>
+#include "Licence/SwellLicence.h"
 #include <juce_dsp/juce_dsp.h>
 #include "GlueDSP.h"
 
@@ -8,6 +9,10 @@ struct GlueSnapshot { float glue=40, mix=85, output=0; int profile=5; };
 
 class GlueProcessor : public juce::AudioProcessor
 {
+public:
+    // Licence Swell : partagée par toutes les instances ; silence tant que le plugin n'est pas activé.
+    juce::SharedResourcePointer<swell::Licence> licence;
+
 public:
     GlueProcessor();
     juce::AudioProcessorValueTreeState state;

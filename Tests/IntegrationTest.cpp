@@ -40,6 +40,7 @@ void audioCheck(double rate,int channels,float mix,float output,bool forcedBypas
 
 int main()
 {
+    swell::Licence::unlockForTesting(); // rendu hors ligne, sans fichier de licence
     juce::ScopedJuceInitialiser_GUI init;
     try {
         GlueProcessor p;
