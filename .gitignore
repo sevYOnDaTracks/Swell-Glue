@@ -4,3 +4,4 @@ Windows/
 .tools/
 *.zip
 .DS_Store
+/dist-licence/
